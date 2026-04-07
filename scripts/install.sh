@@ -64,7 +64,7 @@ resolve_target() {
       echo "$HOME/.agents/skills/$SKILL_NAME"
       ;;
     openclaw)
-      echo "$HOME/.agents/skills/$SKILL_NAME"
+      echo "$HOME/.openclaw/skills/$SKILL_NAME"
       ;;
     generic)
       if [[ -z "$CUSTOM_DIR" ]]; then

@@ -98,7 +98,7 @@ Installs to `~/.agents/skills/test-creator/`. Use `/skills` or `$` to invoke.
 curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool openclaw
 ```
 
-Installs to `~/.agents/skills/test-creator/`.
+Installs to `~/.openclaw/skills/test-creator/`.
 
 ### Manual / Any Tool
 

@@ -98,7 +98,7 @@ curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/
 curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool openclaw
 ```
 
-安装到 `~/.agents/skills/test-creator/`。
+安装到 `~/.openclaw/skills/test-creator/`。
 
 ### 手动安装 / 其他工具
 
