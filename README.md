@@ -79,14 +79,17 @@ Don't see your framework? The adapter system is extensible — add your own in u
 
 ### Claude Code
 
+Global:
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code
-
-# Project-local
-curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code --project
 ```
 
-Installs to `~/.claude/skills/test-creator/` (global) or `.claude/skills/test-creator/` (project).
+Project-local:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code --project
+```
 
 ### Codex
 

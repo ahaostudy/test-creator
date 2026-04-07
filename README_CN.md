@@ -79,14 +79,17 @@ test-creator 给你的 AI 编码助手提供一套经过实战验证的测试方
 
 ### Claude Code
 
+全局安装：
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code
-
-# 项目级安装
-curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code --project
 ```
 
-安装到 `~/.claude/skills/test-creator/`（全局）或 `.claude/skills/test-creator/`（项目）。
+项目级安装：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code --project
+```
 
 ### Codex
 
