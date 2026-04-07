@@ -10,9 +10,9 @@
 
 ---
 
-test-creator is a **skill** that transforms any project into a well-tested codebase. No configuration files to write. No test templates to paste. Just describe your project, and test-creator handles the rest.
+test-creator is a **skill** that builds a complete, professional test system for any project. It doesn't fix your code — it tells you exactly what's broken and where.
 
-It works with **any language, any framework** — Go, Python, Node.js, Java, Rust, you name it.
+Works with **any language, any framework** — Go, Python, Node.js, Java, Rust, you name it.
 
 ---
 
@@ -136,7 +136,7 @@ Your agent will:
 4. Implement the test suite, all files organized under `tests/`
 5. Run automated quality checks via `run-all-checks.sh` across 3 dimensions
 6. Have a sub-agent review the tests from 6 angles
-7. Fix issues until everything passes
+7. Deliver a quality report showing exactly what passes, what fails, and why
 
 ---
 
