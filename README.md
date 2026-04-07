@@ -140,19 +140,6 @@ Your agent will:
 
 ---
 
-## Benchmark
-
-We tested test-creator against baseline (same agents, no skill):
-
-| | With Skill | Without Skill |
-|--|-----------|---------------|
-| **Pass Rate** | 90.3% | 36.1% |
-| **Consistency** | ±8.7% std dev | ±12.7% std dev |
-
-**+54 percentage points** improvement in test quality. The skill turns "vibes-based testing" into systematic, measurable quality.
-
----
-
 ## License
 
 [MIT](LICENSE)
