@@ -9,10 +9,13 @@ The Q&A page is a dynamically generated HTML file that allows users to visually 
 ```
 1. Agent scans project → extracts modules, tech stack, existing tests
 2. Agent generates HTML page via scripts/generate-qa-page.sh (or agent inline)
-3. User opens page in browser
-4. User makes selections and fills in details
-5. Page outputs structured JSON
-6. Agent consumes JSON for test planning
+3. Script prints: HTML path, browser URL, and expected config path (qa-config.json)
+4. User opens page in browser, makes selections
+5. User clicks "Save Config" → browser downloads qa-config.json
+6. User saves qa-config.json to the same directory as the HTML file
+7. User tells agent "config done"
+8. Agent reads <html-dir>/qa-config.json directly
+9. Agent uses JSON to drive test planning
 ```
 
 ## HTML Page Structure
@@ -114,5 +117,7 @@ Text inputs for:
 - Use `scripts/generate-qa-page.sh` to generate the page with dynamic parameters
 - Module list must come from actual project scanning, not hardcoded
 - The page should be self-contained (inline CSS/JS), no external dependencies
-- Output JSON should be copyable and also downloadable as a file
+- The "Save Config" button downloads `qa-config.json` — user must save it to the same directory as the HTML
+- The page displays the expected save path (`%%CONFIG_OUTPUT_PATH%%` injected at generation time)
 - The page should validate that at least one test type is selected before submission
+- Agent reads `qa-config.json` from the HTML directory after user confirms — no manual JSON copy-paste needed

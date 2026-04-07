@@ -1,5 +1,16 @@
 # Quality Scripts Documentation
 
+## Dependencies
+
+### Required
+- **bash 4.0+** — script runtime
+- **Test framework** — whatever the project uses (jest, pytest, go, etc.) must be installed and runnable
+
+### Optional
+- **`jq`** — used to parse `.test-creator-quality.json` config file. If not installed, all thresholds fall back to defaults (line coverage 80%, branch 70%, flaky runs 5, etc.)
+
+---
+
 ## Architecture
 
 ```
@@ -67,7 +78,7 @@ run-all-checks.sh --project-path <path> --test-cmd <command> [--config <path>] [
 | `--project-path` | Yes | Project root directory |
 | `--test-cmd` | Yes | Test command (e.g., `npm test`, `pytest`, `go test ./...`) |
 | `--config` | No | Config file path, defaults to `.test-creator-quality.json` |
-| `--output` | No | Output directory, defaults to `.test-creator-reports/` |
+| `--output` | No | Output directory, defaults to `<project-path>/tests` |
 
 ### Configuration File
 

@@ -109,6 +109,8 @@ cat > "$TMPFILE" << 'HTMLEOF'
   .btn-secondary { background: #6b7280; }
   .btn-secondary:hover { background: #4b5563; }
   .error { color: #dc2626; font-size: 0.9rem; margin-top: 8px; display: none; }
+  .save-path { font-size: 0.9rem; color: #374151; margin-bottom: 12px; }
+  .save-path code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; word-break: break-all; }
   .info-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 0.9rem; color: #1e40af; }
   .desc { display: inline-block; font-size: 0.85rem; color: #6b7280; margin-left: 4px; }
   .input-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
@@ -238,9 +240,10 @@ cat > "$TMPFILE" << 'HTMLEOF'
     <div class="section">
       <h2>Generated Configuration JSON</h2>
       <pre id="jsonOutput"></pre>
+      <p class="save-path">Save to: <code>%%CONFIG_OUTPUT_PATH%%</code></p>
       <div class="actions">
         <button class="btn btn-secondary" onclick="copyToClipboard()">Copy to Clipboard</button>
-        <button class="btn btn-secondary" onclick="downloadJson()">Download as File</button>
+        <button class="btn" onclick="saveConfig()">Save Config</button>
       </div>
     </div>
   </div>
@@ -352,11 +355,11 @@ function copyToClipboard() {
   alert('Copied to clipboard!');
 }
 
-function downloadJson() {
+function saveConfig() {
   var blob = new Blob([JSON.stringify(window.__generatedConfig, null, 2)], { type: 'application/json' });
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'test-config.json';
+  a.download = 'qa-config.json';
   a.click();
 }
 </script>
@@ -364,8 +367,25 @@ function downloadJson() {
 </html>
 HTMLEOF
 
-# Replace placeholders using python for safe multi-line/string replacement
-python3 - "$TMPFILE" "$OUTPUT" "$PROJECT_NAME" "$DESC_LINE" "$MODULES_JSON" << 'PYEOF'
+# Compute absolute paths for HTML and config JSON
+_HTML_DIR="$(cd "$(dirname "$OUTPUT")" && pwd)"
+ABS_OUTPUT="$_HTML_DIR/$(basename "$OUTPUT")"
+CONFIG_OUTPUT_PATH="$_HTML_DIR/qa-config.json"
+
+# On Windows (Git Bash/MSYS), pwd returns /d/Code/... — convert to D:/Code/...
+_convert_path() {
+  local p="$1"
+  if [[ "$p" =~ ^/([a-zA-Z])/ ]]; then
+    local drive="${BASH_REMATCH[1]^^}"
+    echo "${drive}:${p:2}"
+  else
+    echo "$p"
+  fi
+}
+ABS_OUTPUT="$(_convert_path "$ABS_OUTPUT")"
+CONFIG_OUTPUT_PATH="$(_convert_path "$CONFIG_OUTPUT_PATH")"
+
+python3 - "$TMPFILE" "$OUTPUT" "$PROJECT_NAME" "$DESC_LINE" "$MODULES_JSON" "$CONFIG_OUTPUT_PATH" << 'PYEOF'
 import sys
 
 tmpfile = sys.argv[1]
@@ -373,6 +393,7 @@ outfile = sys.argv[2]
 project_name = sys.argv[3]
 desc_line = sys.argv[4]
 modules_json = sys.argv[5]
+config_output_path = sys.argv[6]
 
 with open(tmpfile, 'r', encoding='utf-8') as f:
     content = f.read()
@@ -380,20 +401,12 @@ with open(tmpfile, 'r', encoding='utf-8') as f:
 content = content.replace('%%PROJECT_NAME%%', project_name)
 content = content.replace('%%PROJECT_DESC%%', desc_line)
 content = content.replace('%%MODULES_JSON%%', modules_json)
+content = content.replace('%%CONFIG_OUTPUT_PATH%%', config_output_path)
 
 with open(outfile, 'w', encoding='utf-8') as f:
     f.write(content)
 PYEOF
 
 echo "QA page generated: $OUTPUT"
-
-# Print file:// URL for direct browser access
-ABS_OUTPUT="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
-
-# On Windows (Git Bash/MSYS), pwd returns /d/Code/... — convert to D:/Code/...
-if [[ "$ABS_OUTPUT" =~ ^/([a-zA-Z])/ ]]; then
-  DRIVE="${BASH_REMATCH[1]^^}"
-  ABS_OUTPUT="${DRIVE}:${ABS_OUTPUT:2}"
-fi
-
 echo "Open in browser: file:///$ABS_OUTPUT"
+echo "Config will be read from: $CONFIG_OUTPUT_PATH"

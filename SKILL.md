@@ -141,10 +141,14 @@ URL supports **"Auto-detect"** — agent reads from project config.
 ```
 Step 1 results (endpoints, modules, stack)
   → scripts/generate-qa-page.sh injects data into HTML template
-  → Script prints: "Open in browser: file:///path/to/qa-page.html"
-  → Share the file:// URL with the user so they can open it directly
+  → Script prints:
+      "Open in browser: file:///D:/path/to/tests/qa-page.html"
+      "Config will be read from: D:/path/to/tests/qa-config.json"
   → User opens page in browser, fills in selections
-  → Page returns structured JSON to agent
+  → User clicks "Save Config" → browser downloads qa-config.json
+  → User saves qa-config.json to the same directory as the HTML file
+  → User tells agent "config done"
+  → Agent reads <html-dir>/qa-config.json directly
   → Agent uses JSON to drive Steps 3 → 7
 ```
 
@@ -288,8 +292,16 @@ For example, if your skill root is at `/home/user/.claude/skills/test-creator`:
 ```bash
 /home/user/.claude/skills/test-creator/scripts/run-all-checks.sh \
   --project-path ./my-project \
+  --test-cmd "npm test"
+```
+
+The `--output` flag is optional — it defaults to `<project-path>/tests`. To override:
+
+```bash
+/home/user/.claude/skills/test-creator/scripts/run-all-checks.sh \
+  --project-path ./my-project \
   --test-cmd "npm test" \
-  --output ./tests/quality-report.json
+  --output ./my-project/tests
 ```
 
 ### What it does

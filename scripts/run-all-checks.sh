@@ -6,7 +6,7 @@ set -euo pipefail
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 CONFIG_FILE=".test-creator-quality.json"
-OUTPUT_DIR=".test-creator-reports"
+OUTPUT_DIR=""
 PROJECT_PATH=""
 TEST_CMD=""
 
@@ -24,6 +24,10 @@ done
 if [[ -z "$PROJECT_PATH" || -z "$TEST_CMD" ]]; then
   echo "Usage: run-all-checks.sh --project-path <path> --test-cmd <command> [--config <path>] [--output <path>]"
   exit 1
+fi
+
+if [[ -z "$OUTPUT_DIR" ]]; then
+  OUTPUT_DIR="$PROJECT_PATH/tests"
 fi
 
 # ── Load config ───────────────────────────────────────────────────────────────
