@@ -2,11 +2,12 @@
 set -euo pipefail
 
 # test-creator installer
-# Usage: ./install.sh --tool <claude-code|codex|openclaw|generic> [--project] [--dir <path>]
+# Supports two modes:
+#   1. From repo:  ./install.sh --tool <tool>
+#   2. Remote:     curl -sSL .../install.sh | bash -s -- --tool <tool>
 
 SKILL_NAME="test-creator"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_URL="https://github.com/ahaostudy/test-creator.git"
 
 # --- Parse args ---
 TOOL=""
@@ -15,9 +16,9 @@ CUSTOM_DIR=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --tool)   TOOL="$2"; shift 2 ;;
+    --tool)    TOOL="$2"; shift 2 ;;
     --project) PROJECT=true; shift ;;
-    --dir)    CUSTOM_DIR="$2"; shift 2 ;;
+    --dir)     CUSTOM_DIR="$2"; shift 2 ;;
     -h|--help)
       echo "Usage: ./install.sh --tool <claude-code|codex|openclaw|generic> [--project] [--dir <path>]"
       echo ""
@@ -36,6 +37,25 @@ if [[ -z "$TOOL" ]]; then
   echo "Run ./install.sh --help for usage"
   exit 1
 fi
+
+# --- Resolve source: local repo or remote clone ---
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-.}" 2>/dev/null)"/.. && pwd 2>/dev/null || echo "")"
+TMP_CLONE=""
+
+if [[ -n "$SCRIPT_DIR" && -f "$SCRIPT_DIR/SKILL.md" ]]; then
+  REPO_ROOT="$SCRIPT_DIR"
+else
+  # Running via pipe (curl | bash), need to clone
+  TMP_CLONE="$(mktemp -d)"
+  echo "Downloading test-creator..."
+  git clone --depth 1 "$REPO_URL" "$TMP_CLONE/test-creator" >/dev/null 2>&1
+  REPO_ROOT="$TMP_CLONE/test-creator"
+fi
+
+cleanup() {
+  [[ -n "$TMP_CLONE" && -d "$TMP_CLONE" ]] && rm -rf "$TMP_CLONE"
+}
+trap cleanup EXIT
 
 # --- Resolve target directory ---
 resolve_target() {

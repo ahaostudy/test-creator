@@ -80,15 +80,10 @@ Don't see your framework? The adapter system is extensible — add your own in u
 ### Claude Code
 
 ```bash
-# One-liner
 curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code
 
-# Or clone and install
-git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
-./scripts/install.sh --tool claude-code
-
-# Project-local install
-./scripts/install.sh --tool claude-code --project
+# Project-local
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code --project
 ```
 
 Installs to `~/.claude/skills/test-creator/` (global) or `.claude/skills/test-creator/` (project).
@@ -112,8 +107,7 @@ Installs to `~/.agents/skills/test-creator/`.
 ### Manual / Any Tool
 
 ```bash
-git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
-./scripts/install.sh --tool generic --dir /your/target/dir
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool generic --dir /your/target/dir
 ```
 
 Or just copy the directory yourself — the skill needs `SKILL.md` plus the `adapters/`, `scripts/`, and `references/` folders alongside it.

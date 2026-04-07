@@ -80,15 +80,10 @@ test-creator 给你的 AI 编码助手提供一套经过实战验证的测试方
 ### Claude Code
 
 ```bash
-# 一行命令安装
 curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code
 
-# 或者克隆后安装
-git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
-./scripts/install.sh --tool claude-code
-
 # 项目级安装
-./scripts/install.sh --tool claude-code --project
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code --project
 ```
 
 安装到 `~/.claude/skills/test-creator/`（全局）或 `.claude/skills/test-creator/`（项目）。
@@ -112,8 +107,7 @@ curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/
 ### 手动安装 / 其他工具
 
 ```bash
-git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
-./scripts/install.sh --tool generic --dir /your/target/dir
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool generic --dir /your/target/dir
 ```
 
 或者直接手动复制整个目录 —— 你需要 `SKILL.md` 以及同级的 `adapters/`、`scripts/`、`references/` 文件夹。
