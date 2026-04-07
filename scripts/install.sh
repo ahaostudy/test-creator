@@ -11,20 +11,17 @@ REPO_URL="https://github.com/ahaostudy/test-creator.git"
 
 # --- Parse args ---
 TOOL=""
-PROJECT=false
 CUSTOM_DIR=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --tool)    TOOL="$2"; shift 2 ;;
-    --project) PROJECT=true; shift ;;
     --dir)     CUSTOM_DIR="$2"; shift 2 ;;
     -h|--help)
-      echo "Usage: ./install.sh --tool <claude-code|codex|openclaw|generic> [--project] [--dir <path>]"
+      echo "Usage: ./install.sh --tool <claude-code|codex|openclaw|generic> [--dir <path>]"
       echo ""
       echo "Options:"
       echo "  --tool      Target tool: claude-code, codex, openclaw, generic"
-      echo "  --project   Install to project-local directory instead of user-global"
       echo "  --dir       Custom target directory (only for --tool generic)"
       exit 0
       ;;
@@ -61,25 +58,13 @@ trap cleanup EXIT
 resolve_target() {
   case "$TOOL" in
     claude-code)
-      if $PROJECT; then
-        echo ".claude/skills/$SKILL_NAME"
-      else
-        echo "$HOME/.claude/skills/$SKILL_NAME"
-      fi
+      echo "$HOME/.claude/skills/$SKILL_NAME"
       ;;
     codex)
-      if $PROJECT; then
-        echo ".agents/skills/$SKILL_NAME"
-      else
-        echo "$HOME/.agents/skills/$SKILL_NAME"
-      fi
+      echo "$HOME/.agents/skills/$SKILL_NAME"
       ;;
     openclaw)
-      if $PROJECT; then
-        echo "skills/$SKILL_NAME"
-      else
-        echo "$HOME/.agents/skills/$SKILL_NAME"
-      fi
+      echo "$HOME/.agents/skills/$SKILL_NAME"
       ;;
     generic)
       if [[ -z "$CUSTOM_DIR" ]]; then
