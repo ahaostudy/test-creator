@@ -40,7 +40,7 @@ Be adversarial. Be skeptical. Assume there are issues until proven otherwise.
 4. Original requirements (from user Q&A):
 [INSERT Q&A CONFIG JSON HERE]
 
-5. Project analysis results (endpoints, pages, data models, log config):
+5. Project analysis results (endpoints, pages, data models, log config — from Step 1):
 [INSERT PROJECT ANALYSIS RESULTS HERE]
 
 ## Review Dimensions

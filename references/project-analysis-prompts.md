@@ -215,7 +215,7 @@ You are a project analyst. Your job is to document the logging and observability
 
 ## How to Use These Templates
 
-In Step 0, the author agent invokes **all 4 sub-agents in parallel**:
+In Step 1, the author agent invokes **all 4 sub-agents in parallel**:
 
 ```
 Author agent:
@@ -225,7 +225,7 @@ Author agent:
   → Sub-agent 4: Logging          → returns log config + query method
   (all run in parallel)
 
-Author agent collects all 4 results, then proceeds to Step 1 (Q&A page generation).
+Author agent collects all 4 results, then proceeds to Step 2 (Q&A page generation).
 ```
 
-The Q&A page is pre-populated with data from these results. The test plan in Step 1.5 is built directly from this inventory — every endpoint and every page flow becomes a test target.
+The Q&A page is pre-populated with data from these results. The test plan in Step 3 is built directly from this inventory — every endpoint and every page flow becomes a test target.

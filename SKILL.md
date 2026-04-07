@@ -23,22 +23,22 @@ Build a complete testing system for any project. This skill is **language/framew
 ## Workflow Overview
 
 ```
-Step 0: Deep Project Analysis   — sub-agents extract APIs, pages, data models, logs
-Step 1: Pre-research Q&A Page   — interactive HTML page collects user requirements
-Step 1.5: Test Development Plan — written doc: what to test, how, where files go
-Step 2: Test System Design      — generate test plan from user config + test matrix
-Step 3: Implementation          — generate test files, mocks, fixtures, CI config
-Step 4: Verification            — run-all-checks.sh produces quality report
-Step 5: Quality Evaluation      — automated scripts + sub-agent deep review
+Step 1: Deep Project Analysis   — sub-agents extract APIs, pages, data models, logs
+Step 2: Pre-research Q&A Page   — interactive HTML page collects user requirements
+Step 3: Test Development Plan   — written doc: what to test, how, where files go
+Step 4: Test System Design      — finalize test plan from user config + test matrix
+Step 5: Implementation          — generate test files, mocks, fixtures, CI config
+Step 6: Verification            — run-all-checks.sh produces quality report
+Step 7: Quality Evaluation      — automated scripts + sub-agent deep review
 ```
 
 **Every step must complete before proceeding.** Do not skip steps or merge them together.
 
 ---
 
-## Step 0: Deep Project Analysis
+## Step 1: Deep Project Analysis
 
-**This step is mandatory and must be thorough.** Shallow analysis is the root cause of incomplete tests. Do not proceed to Step 1 until all 4 sub-agents have returned results.
+**This step is mandatory and must be thorough.** Shallow analysis is the root cause of incomplete tests. Do not proceed to Step 2 until all 4 sub-agents have returned results.
 
 ### Run 4 sub-agents in parallel
 
@@ -67,15 +67,15 @@ Collect all 4 results before proceeding
 - Complete page/flow inventory (used to ensure every flow has an E2E test)
 - DB connection string / config file path (used for Test Point 4: Data Validation)
 - Log query command + format (used for Test Point 5: Log Validation)
-- Tech stack + test framework (used for adapter selection in Step 4)
+- Tech stack + test framework (used for adapter selection in Step 6)
 
 ---
 
-## Step 1: Pre-research Q&A Page
+## Step 2: Pre-research Q&A Page
 
 Generate an interactive HTML page so users can visually select options instead of answering questions one by one in the terminal.
 
-Use `scripts/generate-qa-page.sh` to generate the page with project data injected from Step 0.
+Use `scripts/generate-qa-page.sh` to generate the page with project data injected from Step 1.
 
 ### What the page collects
 
@@ -90,7 +90,7 @@ Use `scripts/generate-qa-page.sh` to generate the page with project data injecte
 
 **2. Modules to cover:**
 
-- Module list is auto-generated from Step 0 analysis
+- Module list is auto-generated from Step 1 analysis
 - All modules checked by default; all use the same selected test types
 
 **3. Test environment:**
@@ -139,20 +139,20 @@ URL supports **"Auto-detect"** — agent reads from project config.
 ### Page implementation flow
 
 ```
-Step 0 results (endpoints, modules, stack)
+Step 1 results (endpoints, modules, stack)
   → scripts/generate-qa-page.sh injects data into HTML template
   → Script prints: "Open in browser: file:///path/to/qa-page.html"
   → Share the file:// URL with the user so they can open it directly
   → User opens page in browser, fills in selections
   → Page returns structured JSON to agent
-  → Agent uses JSON to drive Steps 1.5 → 5
+  → Agent uses JSON to drive Steps 3 → 7
 ```
 
 See `references/qa-page-spec.md` for HTML structure details.
 
 ---
 
-## Step 1.5: Test Development Plan
+## Step 3: Test Development Plan
 
 Before writing any test code, produce a written test development plan document and confirm with the user.
 
@@ -178,14 +178,14 @@ tests/
   TEST-PLAN.md  — This file
 
 ## API Test Coverage
-For each endpoint from Step 0 analysis:
+For each endpoint from Step 1 analysis:
 | Endpoint | Test file | 6 points covered |
 |----------|-----------|-----------------|
 | POST /api/v1/users | tests/api/test_users.py | 1,2,3,4,5,6 |
 ...
 
 ## E2E Test Coverage
-For each page/flow from Step 0 analysis:
+For each page/flow from Step 1 analysis:
 | Page/Flow | Test file | Scenarios |
 |-----------|-----------|-----------|
 | /login → /dashboard | tests/e2e/test_auth_flow.py | happy path, wrong password, session expiry |
@@ -204,7 +204,7 @@ For each page/flow from Step 0 analysis:
 
 ---
 
-## Step 2: Test System Design
+## Step 4: Test System Design
 
 Using the Q&A JSON output + the test matrix below, finalize the test plan.
 
@@ -236,7 +236,7 @@ See `references/test-coverage-details.md` for per-type coverage specifics.
 
 ---
 
-## Step 3: Implementation
+## Step 5: Implementation
 
 ### Test file organization
 
@@ -250,7 +250,7 @@ tests/
   integration/      — Integration tests
   fixtures/         — Test data factories and static fixtures
   helpers/          — Shared utilities (DB helpers, log capture, auth helpers)
-  TEST-PLAN.md      — Test development plan (from Step 1.5)
+  TEST-PLAN.md      — Test development plan (from Step 3)
   .test-creator-quality.json  — Quality thresholds config
 ```
 
@@ -271,7 +271,7 @@ tests/
 
 ---
 
-## Step 4: Verification
+## Step 6: Verification
 
 **After implementation, always run `run-all-checks.sh`. Do not run the test framework directly.**
 
@@ -323,13 +323,13 @@ If your project uses a framework not listed, create a new adapter following the 
 
 ---
 
-## Step 5: Quality Evaluation
+## Step 7: Quality Evaluation
 
 Testing the tests. Two layers: **automated scripts** for mechanical checks, **sub-agent review** for semantic checks.
 
-### Layer 1: Automated Quality Scripts (already done in Step 4)
+### Layer 1: Automated Quality Scripts (already done in Step 6)
 
-The `run-all-checks.sh` output from Step 4 IS the Layer 1 result. Review the generated `quality-report.json` and `quality-report.md`.
+The `run-all-checks.sh` output from Step 6 IS the Layer 1 result. Review the generated `quality-report.json` and `quality-report.md`.
 
 **Config file** (`tests/.test-creator-quality.json`):
 
@@ -353,10 +353,10 @@ Scripts cannot judge whether tests are *actually correct or sufficient*. That re
 
 **How to invoke the sub-agent:**
 
-1. Pass the sub-agent: `quality-report.json`, test file paths, source file paths, Q&A config JSON, and Step 0 project analysis results
+1. Pass the sub-agent: `quality-report.json`, test file paths, source file paths, Q&A config JSON, and Step 1 project analysis results
 2. Use the prompt template in `references/sub-agent-review-prompt.md`
 3. Sub-agent returns a prioritized issue list
-4. Author agent fixes issues, re-runs `run-all-checks.sh` + sub-agent review
+4. Author agent fixes test issues, re-runs `run-all-checks.sh` + sub-agent review
 5. Loop until all high/medium issues are resolved
 
 **When bugs are found:** Document them in `tests/TEST-PLAN.md` under "Issues Found". Do not fix source code.
@@ -364,9 +364,9 @@ Scripts cannot judge whether tests are *actually correct or sufficient*. That re
 ### Complete Quality Flow
 
 ```
-Step 4: run-all-checks.sh → quality-report.json
-  → Step 5 Layer 1: Review quality-report for mechanical issues
-  → Step 5 Layer 2: Sub-agent review (report + tests + source + requirements + project analysis)
+Step 6: run-all-checks.sh → quality-report.json
+  → Step 7 Layer 1: Review quality-report for mechanical issues
+  → Step 7 Layer 2: Sub-agent review (report + tests + source + requirements + project analysis)
   → Merge: scripts = quantitative, sub-agent = qualitative
   → Fix test issues by severity → re-run run-all-checks.sh → re-invoke sub-agent → loop until clean
 ```
