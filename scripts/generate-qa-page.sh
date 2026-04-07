@@ -159,7 +159,7 @@ cat > "$TMPFILE" << 'HTMLEOF'
       URL
       <div class="input-row">
         <input type="text" name="env_url" value="http://localhost:3000" placeholder="http://localhost:3000">
-        <button type="button" class="btn btn-sm" onclick="agentFetch('env_url')">Agent自行获取</button>
+        <button type="button" class="btn btn-sm" onclick="agentFetch('env_url')">Auto-detect</button>
       </div>
     </label>
     <label>Auth Method
@@ -171,7 +171,7 @@ cat > "$TMPFILE" << 'HTMLEOF'
   <div class="section">
     <h2>4. Database Configuration</h2>
     <div class="radio-group">
-      <label><input type="radio" name="db_mode" value="agent_auto" checked> Agent自行获取 <span class="desc">Agent reads connection from project config</span></label>
+      <label><input type="radio" name="db_mode" value="agent_auto" checked> Auto-detect <span class="desc">Agent reads connection from project config</span></label>
       <label><input type="radio" name="db_mode" value="user_provide"> User provides connection</label>
       <label><input type="radio" name="db_mode" value="none"> No database / In-memory</label>
     </div>
@@ -189,7 +189,7 @@ cat > "$TMPFILE" << 'HTMLEOF'
   <div class="section">
     <h2>5. Log Configuration</h2>
     <div class="radio-group">
-      <label><input type="radio" name="log_mode" value="agent_auto" checked> Agent自行获取 <span class="desc">Agent reads log config from project</span></label>
+      <label><input type="radio" name="log_mode" value="agent_auto" checked> Auto-detect <span class="desc">Agent reads log config from project</span></label>
       <label><input type="radio" name="log_mode" value="user_provide"> User provides log query method</label>
       <label><input type="radio" name="log_mode" value="none"> No logging / Skip log validation</label>
     </div>

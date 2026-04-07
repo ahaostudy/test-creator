@@ -41,12 +41,12 @@ Radio select for environment type:
 - Transaction rollback
 
 Text inputs for: Environment URL, Auth method.
-URL input includes **"Agent自行获取"** button — agent auto-detects from project config.
+URL input includes **"Auto-detect"** button — agent auto-detects from project config.
 
 ### Section 4: Database Configuration
 
-Radio select (default: Agent自行获取):
-- **Agent自行获取** — agent reads DB connection string and type from project config
+Radio select (default: Auto-detect):
+- **Auto-detect** — agent reads DB connection string and type from project config
 - **User provides** — user manually enters connection string and DB type
 - **No database / In-memory** — skip DB-related validation tests
 
@@ -54,8 +54,8 @@ This section supports **Test Point 4: Data Validation** — ensuring tests verif
 
 ### Section 5: Log Configuration
 
-Radio select (default: Agent自行获取):
-- **Agent自行获取** — agent reads log config (location, format) from project
+Radio select (default: Auto-detect):
+- **Auto-detect** — agent reads log config (location, format) from project
 - **User provides** — user manually enters log query method and format
 - **No logging** — skip log validation tests
 
