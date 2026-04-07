@@ -76,9 +76,25 @@ Generate an interactive HTML page so users can visually select options instead o
 | Temporary environment | Created per-run, destroyed after |
 | Transaction rollback | DB tests without side effects |
 
-User fills in: environment URL, auth method, credentials (if any).
+User fills in: environment URL, auth method, credentials (if any). URL supports **"Agent自行获取"** — agent auto-detects from project config.
 
-**4. Test data strategy:**
+**4. Database configuration (supports Test Point 4: Data Validation):**
+
+| Option | Description |
+|--------|-------------|
+| Agent自行获取 | Agent reads DB connection from project config (default) |
+| User provides | User supplies connection string and DB type manually |
+| No database | In-memory store, skip DB-related tests |
+
+**5. Log configuration (supports Test Point 5: Log Validation):**
+
+| Option | Description |
+|--------|-------------|
+| Agent自行获取 | Agent reads log config from project (default) |
+| User provides | User supplies log query method and format |
+| No logging | Skip log validation tests |
+
+**6. Test data strategy:**
 
 | Option | Description |
 |--------|-------------|
@@ -87,7 +103,7 @@ User fills in: environment URL, auth method, credentials (if any).
 | Fixed fixtures | Pre-set data, same every run |
 | Dynamic generation | Random data per run |
 
-**5. Additional context:**
+**7. Additional context:**
 
 - Existing test coverage estimate?
 - Known bugs or weak areas to focus on?
