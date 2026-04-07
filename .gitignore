@@ -1,0 +1,31 @@
+# test-creator — .gitignore
+
+# Development workspace (local eval runs, agent outputs)
+test-creator-workspace/
+
+# Local quality reports
+.test-creator-reports/
+.test-creator-quality.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (for adapter testing)
+node_modules/
+package-lock.json
+
+# Python (for adapter testing)
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+coverage.json
+
+# Go (for adapter testing)
+*.test
+coverage.out

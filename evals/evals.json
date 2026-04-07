@@ -1,0 +1,49 @@
+{
+  "skill_name": "test-creator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a Node.js Express API project with user and order modules. I want to set up a proper test suite for it — API tests and unit tests. Can you help me build the testing system?",
+      "expected_output": "Agent scans the project, generates a Q&A HTML page for user to select test types/modules/environment/data strategy, then proceeds to design and implement tests covering all 6 mandatory test points per selected type.",
+      "files": [],
+      "expectations": [
+        "Agent performs project analysis identifying tech stack and modules",
+        "Agent generates an interactive Q&A HTML page",
+        "Q&A page includes test type selection, module coverage matrix, environment config, data strategy",
+        "Agent produces a structured JSON config from Q&A page output",
+        "Agent designs a test plan covering all 6 mandatory test points for each selected test type",
+        "Agent implements test files organized by type",
+        "Agent runs quality verification using run-all-checks.sh",
+        "Agent invokes a sub-agent for deep quality review, not self-review"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I just built a Python Flask app with three endpoints and I have zero tests. Help me create a comprehensive test suite from scratch. I want API tests and integration tests. I'm on a Mac, using pytest, and I want to test against my local dev database.",
+      "expected_output": "Agent follows the full workflow: analysis → Q&A page → test plan → implementation → quality check. Tests cover CRUD, auth, boundary cases, status codes, data validation, logs, and error handling for both API and integration test types.",
+      "files": [],
+      "expectations": [
+        "Agent detects Python/pytest stack correctly",
+        "Test plan covers both API and integration test types",
+        "Each test type includes all 6 mandatory test points",
+        "Integration tests cover database read/write consistency",
+        "Quality scripts detect the pytest adapter",
+        "Sub-agent review is invoked with adversarial prompt"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "My Go project already has some unit tests but coverage is low and I suspect some tests are flaky. Can you evaluate what I have and improve the test suite? Focus on unit and integration testing.",
+      "expected_output": "Agent runs existing tests, evaluates quality using run-all-checks.sh, identifies gaps, generates a Q&A page to confirm scope with user, then fills in missing coverage following the 6 mandatory test points.",
+      "files": [],
+      "expectations": [
+        "Agent runs existing tests and reports current state",
+        "Agent uses run-all-checks.sh to measure coverage, stability, performance",
+        "Agent identifies which of the 6 test points are missing per module",
+        "Agent generates Q&A page for user to confirm scope",
+        "New tests fill gaps without duplicating existing coverage",
+        "Sub-agent reviews both new and existing tests"
+      ]
+    }
+  ]
+}
