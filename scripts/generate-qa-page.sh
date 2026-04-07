@@ -242,7 +242,6 @@ cat > "$TMPFILE" << 'HTMLEOF'
       <pre id="jsonOutput"></pre>
       <p class="save-path">Save to: <code>%%CONFIG_OUTPUT_PATH%%</code></p>
       <div class="actions">
-        <button class="btn btn-secondary" onclick="copyToClipboard()">Copy to Clipboard</button>
         <button class="btn" onclick="saveConfig()">Save Config</button>
       </div>
     </div>
@@ -348,11 +347,6 @@ function generateConfig() {
   document.getElementById('jsonOutput').textContent = JSON.stringify(config, null, 2);
   document.getElementById('output').style.display = 'block';
   window.__generatedConfig = config;
-}
-
-function copyToClipboard() {
-  navigator.clipboard.writeText(JSON.stringify(window.__generatedConfig, null, 2));
-  alert('Copied to clipboard!');
 }
 
 function saveConfig() {
