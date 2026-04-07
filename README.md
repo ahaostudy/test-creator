@@ -75,15 +75,58 @@ Don't see your framework? The adapter system is extensible — add your own in u
 
 ---
 
+## Installation
+
+### Claude Code
+
+```bash
+# One-liner
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code
+
+# Or clone and install
+git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
+./scripts/install.sh --tool claude-code
+
+# Project-local install
+./scripts/install.sh --tool claude-code --project
+```
+
+Installs to `~/.claude/skills/test-creator/` (global) or `.claude/skills/test-creator/` (project).
+
+### Codex
+
+```bash
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool codex
+```
+
+Installs to `~/.agents/skills/test-creator/`. Use `/skills` or `$` to invoke.
+
+### OpenClaw
+
+```bash
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool openclaw
+```
+
+Installs to `~/.agents/skills/test-creator/`.
+
+### Manual / Any Tool
+
+```bash
+git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
+./scripts/install.sh --tool generic --dir /your/target/dir
+```
+
+Or just copy the directory yourself — the skill needs `SKILL.md` plus the `adapters/`, `scripts/`, and `references/` folders alongside it.
+
 ## Quick Start
 
 ### 1. Install
 
-Drop `SKILL.md` into your skills directory.
+Pick your tool above and run the install command.
 
 ### 2. Use it
 
-Ask Claude to build tests for any project:
+Ask your AI agent to build tests for any project:
 
 > *"Help me create a test suite for my Flask API"*
 >
@@ -95,7 +138,7 @@ test-creator activates automatically.
 
 ### 3. Let it work
 
-Claude will:
+Your agent will:
 
 1. Scan your project — tech stack, modules, existing tests
 2. Generate an interactive Q&A page for you to pick what to cover

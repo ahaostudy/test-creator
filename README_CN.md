@@ -75,15 +75,58 @@ test-creator 给你的 AI 编码助手提供一套经过实战验证的测试方
 
 ---
 
+## 安装
+
+### Claude Code
+
+```bash
+# 一行命令安装
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool claude-code
+
+# 或者克隆后安装
+git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
+./scripts/install.sh --tool claude-code
+
+# 项目级安装
+./scripts/install.sh --tool claude-code --project
+```
+
+安装到 `~/.claude/skills/test-creator/`（全局）或 `.claude/skills/test-creator/`（项目）。
+
+### Codex
+
+```bash
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool codex
+```
+
+安装到 `~/.agents/skills/test-creator/`，使用 `/skills` 或 `$` 调用。
+
+### OpenClaw
+
+```bash
+curl -sSL https://raw.githubusercontent.com/ahaostudy/test-creator/main/scripts/install.sh | bash -s -- --tool openclaw
+```
+
+安装到 `~/.agents/skills/test-creator/`。
+
+### 手动安装 / 其他工具
+
+```bash
+git clone https://github.com/ahaostudy/test-creator.git && cd test-creator
+./scripts/install.sh --tool generic --dir /your/target/dir
+```
+
+或者直接手动复制整个目录 —— 你需要 `SKILL.md` 以及同级的 `adapters/`、`scripts/`、`references/` 文件夹。
+
 ## 快速开始
 
 ### 1. 安装
 
-把 `SKILL.md` 放到你的 skills 目录下。
+选择上面适合你工具的安装命令。
 
 ### 2. 使用
 
-让 Claude 为你的项目生成测试：
+让你的 AI 助手为项目生成测试：
 
 > *"帮我给这个 Flask API 写测试"*
 >
@@ -95,7 +138,7 @@ test-creator 会自动激活。
 
 ### 3. 交给它
 
-Claude 会：
+AI 会：
 
 1. 扫描你的项目 —— 技术栈、模块、已有测试
 2. 生成交互式问答页面，让你选择要覆盖的内容

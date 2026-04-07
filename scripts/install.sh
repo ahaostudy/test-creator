@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# test-creator installer
+# Usage: ./install.sh --tool <claude-code|codex|openclaw|generic> [--project] [--dir <path>]
+
+SKILL_NAME="test-creator"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# --- Parse args ---
+TOOL=""
+PROJECT=false
+CUSTOM_DIR=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --tool)   TOOL="$2"; shift 2 ;;
+    --project) PROJECT=true; shift ;;
+    --dir)    CUSTOM_DIR="$2"; shift 2 ;;
+    -h|--help)
+      echo "Usage: ./install.sh --tool <claude-code|codex|openclaw|generic> [--project] [--dir <path>]"
+      echo ""
+      echo "Options:"
+      echo "  --tool      Target tool: claude-code, codex, openclaw, generic"
+      echo "  --project   Install to project-local directory instead of user-global"
+      echo "  --dir       Custom target directory (only for --tool generic)"
+      exit 0
+      ;;
+    *) echo "Unknown option: $1"; exit 1 ;;
+  esac
+done
+
+if [[ -z "$TOOL" ]]; then
+  echo "Error: --tool is required"
+  echo "Run ./install.sh --help for usage"
+  exit 1
+fi
+
+# --- Resolve target directory ---
+resolve_target() {
+  case "$TOOL" in
+    claude-code)
+      if $PROJECT; then
+        echo ".claude/skills/$SKILL_NAME"
+      else
+        echo "$HOME/.claude/skills/$SKILL_NAME"
+      fi
+      ;;
+    codex)
+      if $PROJECT; then
+        echo ".agents/skills/$SKILL_NAME"
+      else
+        echo "$HOME/.agents/skills/$SKILL_NAME"
+      fi
+      ;;
+    openclaw)
+      if $PROJECT; then
+        echo "skills/$SKILL_NAME"
+      else
+        echo "$HOME/.agents/skills/$SKILL_NAME"
+      fi
+      ;;
+    generic)
+      if [[ -z "$CUSTOM_DIR" ]]; then
+        echo "Error: --dir is required for --tool generic"
+        exit 1
+      fi
+      echo "$CUSTOM_DIR/$SKILL_NAME"
+      ;;
+    *)
+      echo "Error: Unknown tool '$TOOL'"
+      echo "Supported: claude-code, codex, openclaw, generic"
+      exit 1
+      ;;
+  esac
+}
+
+TARGET="$(resolve_target)"
+
+# --- Install ---
+echo "Installing test-creator to: $TARGET"
+
+mkdir -p "$TARGET"
+
+# Copy files preserving directory structure
+cp "$REPO_ROOT/SKILL.md" "$TARGET/"
+cp -r "$REPO_ROOT/adapters" "$TARGET/"
+cp -r "$REPO_ROOT/scripts" "$TARGET/"
+cp -r "$REPO_ROOT/references" "$TARGET/"
+
+# Make shell scripts executable
+find "$TARGET" -name "*.sh" -exec chmod +x {} \;
+
+echo ""
+echo "Done! Installed files:"
+echo "  $TARGET/SKILL.md"
+echo "  $TARGET/adapters/   ($(ls "$TARGET/adapters/" | wc -l | tr -d ' ') files)"
+echo "  $TARGET/scripts/    ($(ls "$TARGET/scripts/" | wc -l | tr -d ' ') files)"
+echo "  $TARGET/references/ ($(ls "$TARGET/references/" | wc -l | tr -d ' ') files)"
+echo ""
+echo "test-creator is ready to use."
