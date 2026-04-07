@@ -389,4 +389,11 @@ echo "QA page generated: $OUTPUT"
 
 # Print file:// URL for direct browser access
 ABS_OUTPUT="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
-echo "Open in browser: file://$ABS_OUTPUT"
+
+# On Windows (Git Bash/MSYS), pwd returns /d/Code/... — convert to D:/Code/...
+if [[ "$ABS_OUTPUT" =~ ^/([a-zA-Z])/ ]]; then
+  DRIVE="${BASH_REMATCH[1]^^}"
+  ABS_OUTPUT="${DRIVE}:${ABS_OUTPUT:2}"
+fi
+
+echo "Open in browser: file:///$ABS_OUTPUT"
