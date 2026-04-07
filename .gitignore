@@ -3,6 +3,9 @@
 # Development workspace (local eval runs, agent outputs)
 test-creator-workspace/
 
+# Temp files
+tmp/
+
 # Local quality reports
 .test-creator-reports/
 .test-creator-quality.json
