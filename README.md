@@ -29,7 +29,7 @@ Every test type must pass all 6 mandatory checkpoints. No shortcuts.
 | 1 | **Happy Path** | Does it actually work? |
 | 2 | **Boundaries** | What happens with empty inputs, max values, special characters? |
 | 3 | **Status Codes** | Are you getting the right HTTP/business codes — not just 200? |
-| 4 | **Data Integrity** | Are responses complete? Types correct? Matches the database? |
+| 4 | **Data Integrity** | Does the database actually store what was sent? Field-by-field verification against the storage layer. |
 | 5 | **Logging** | Do critical operations log properly? Is sensitive data staying out of logs? |
 | 6 | **Error Handling** | What happens when things go wrong? Graceful degradation or crash? |
 
@@ -54,8 +54,9 @@ Pick what your project needs — or use all four:
 
 | The old way | With test-creator |
 |-------------|-------------------|
-| Ask the agent "write tests" and hope for the best | Structured 6-step workflow: analyze → plan → implement → verify → review |
+| Ask the agent "write tests" and hope for the best | 7-step workflow: deep analysis → Q&A → test plan → implement → verify → review → fix |
 | Tests pass but miss real bugs | 6 mandatory test points per type — no cherry-picking |
+| Data validation = checking response field types | Data validation = querying the storage layer directly, field by field |
 | No idea if the suite is actually good | Multi-dimensional quality report (coverage + stability + performance) |
 | Self-review (agent checking its own work) | Adversarial sub-agent review with 6 dimensions |
 | Works with one framework | Works with any language/framework via adapter system |
@@ -129,12 +130,13 @@ test-creator activates automatically.
 
 Your agent will:
 
-1. Scan your project — tech stack, modules, existing tests
-2. Generate an interactive Q&A page for you to pick what to cover
-3. Design and implement the test suite
-4. Run automated quality checks across 3 dimensions
-5. Have a sub-agent review the tests from 6 angles
-6. Fix issues until everything passes
+1. Run parallel sub-agents to deeply analyze your project — every API endpoint, page flow, data model, and log config
+2. Generate an interactive Q&A page for you to configure what to cover
+3. Write a test development plan and confirm it with you before writing any code
+4. Implement the test suite, all files organized under `tests/`
+5. Run automated quality checks via `run-all-checks.sh` across 3 dimensions
+6. Have a sub-agent review the tests from 6 angles
+7. Fix issues until everything passes
 
 ---
 
