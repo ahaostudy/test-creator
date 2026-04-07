@@ -386,3 +386,7 @@ with open(outfile, 'w', encoding='utf-8') as f:
 PYEOF
 
 echo "QA page generated: $OUTPUT"
+
+# Print file:// URL for direct browser access
+ABS_OUTPUT="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
+echo "Open in browser: file://$ABS_OUTPUT"

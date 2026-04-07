@@ -141,6 +141,8 @@ URL supports **"Auto-detect"** — agent reads from project config.
 ```
 Step 0 results (endpoints, modules, stack)
   → scripts/generate-qa-page.sh injects data into HTML template
+  → Script prints: "Open in browser: file:///path/to/qa-page.html"
+  → Share the file:// URL with the user so they can open it directly
   → User opens page in browser, fills in selections
   → Page returns structured JSON to agent
   → Agent uses JSON to drive Steps 1.5 → 5
