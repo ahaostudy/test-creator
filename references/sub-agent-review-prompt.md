@@ -40,6 +40,9 @@ Be adversarial. Be skeptical. Assume there are issues until proven otherwise.
 4. Original requirements (from user Q&A):
 [INSERT Q&A CONFIG JSON HERE]
 
+5. Project analysis results (endpoints, pages, data models, log config):
+[INSERT PROJECT ANALYSIS RESULTS HERE]
+
 ## Review Dimensions
 
 Check ALL of the following. For each, provide specific findings with file paths and line numbers.
@@ -56,29 +59,51 @@ Check ALL of the following. For each, provide specific findings with file paths 
 - Do business logic assertions match the actual business rules?
 - Are negative test cases expecting the right error conditions?
 
-### 3. Scenario Completeness
-- Map each module × test_type combination against the 6 mandatory test points:
-  1. Basic effect (happy path)
-  2. Boundary cases
-  3. Status code validation
-  4. Data validation
-  5. Log validation
-  6. Exception/error handling
-- Flag any missing combinations.
-- Flag any test point that is present but superficial.
+### 3. Scenario Completeness — 6 Mandatory Test Points
 
-### 4. Mock Reasonableness
+For EVERY module × test_type combination in the Q&A config, verify ALL 6 points are present.
+A missing point must be flagged as HIGH severity. "N/A" is only acceptable if explicitly justified in a comment.
+
+| # | Test Point | Must be present |
+|---|-----------|-----------------|
+| 1 | Basic Effect | Happy path test exists |
+| 2 | Boundary Cases | Edge values tested (empty, max-length, special chars, concurrent) |
+| 3 | Status Code Validation | HTTP status AND business code both verified |
+| 4 | Data Validation | Storage layer queried directly (see rule below) |
+| 5 | Log Validation | Log output verified after key operations |
+| 6 | Exception/Error Handling | Bad input, timeouts, service failures handled gracefully |
+
+**Test Point 4 — Data Validation rule:**
+Flag as HIGH severity if the test only checks response field types (isinstance, "key" in dict).
+Data validation MUST query the storage layer (DB, cache) directly and compare stored values against what was sent.
+Example of what to flag:
+  assert isinstance(response.json()["email"], str)  ← WRONG, flag this
+Example of what is acceptable:
+  db_row = db.execute("SELECT * FROM users WHERE id=?", user_id)
+  assert db_row["email"] == payload["email"]  ← correct
+
+**Test Point 5 — Log Validation rule:**
+Flag as HIGH severity if no test captures and inspects log output.
+Tests must assert: key operations produce a log entry, log level is correct, no sensitive data (passwords, tokens) appears in logs.
+
+### 4. Coverage Against Project Inventory
+- Cross-reference the project analysis (endpoints, pages) against the test files.
+- Flag any endpoint from the API inventory that has no corresponding test.
+- Flag any page flow from the UI inventory that has no corresponding E2E test.
+- Missing coverage = HIGH severity.
+
+### 5. Mock Reasonableness
 - Is any real logic being mocked away that should actually be tested?
 - Are mock return values realistic?
 - Are there tests that could work without mocks but use them unnecessarily?
 - Are external dependencies properly isolated?
 
-### 5. Test Data Quality
+### 6. Test Data Quality
 - Does test data cover the required variety (normal, boundary, edge, invalid)?
 - Are boundary values actually at the boundaries (0, -1, max_int, empty string)?
 - Is test data realistic or obviously artificial in ways that might miss real-world bugs?
 
-### 6. Maintainability
+### 7. Maintainability
 - Do test names clearly describe what they verify?
 - Is the test structure logical (grouped by module/feature)?
 - Is there excessive duplication that should be abstracted?
@@ -91,7 +116,7 @@ Return a JSON array of issues, sorted by severity (high → medium → low):
 ```json
 [
   {
-    "dimension": "test_effectiveness | logic_correctness | scenario_completeness | mock_reasonableness | test_data_quality | maintainability",
+    "dimension": "test_effectiveness | logic_correctness | scenario_completeness | coverage_gap | mock_reasonableness | test_data_quality | maintainability",
     "severity": "high | medium | low",
     "file": "path/to/test/file",
     "line": 42,
